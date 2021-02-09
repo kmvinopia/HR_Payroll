@@ -1,0 +1,147 @@
+﻿@{
+    ViewData["Title"] = "Calculate Salary";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h4><i class="fa fa-th-large"></i> Calculate Employee Salary</h4>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <label class="control-label">Select Employee:</label> &nbsp;&nbsp;
+                                    <div class="form-group form-inline">
+                                        <select class="form-control" name="lstEmployee" id="lstEmployee" asp-items="@ViewBag.Employees"></select> &nbsp;&nbsp;
+                                        <button type="button" class="btn btn-success bg-success" id="btnComputeSalary">Compute Salary</button>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+
+                                    <table class="table table-responsive-md table-bordered table-hover" id="tblEmployeeItems" style="max-height:400px;">
+                                        <tbody>
+                                            <tr>
+                                                <td>Employee Name:</td><td id="EmployeeName"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Employee TIN:</td><td id="EmployeeTIN"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Employee Type:</td><td id="EmployeeType"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Employee Work Hours:</td><td id="EmployeeWorkHours"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Employee Absences:</td><td id="EmployeeAbsences"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Employee Tax Rate:</td><td id="EmployeeTaxRate"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Employee Salary:</td><td id="EmployeeGrossSalary"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Employee Net Salary:</td><td id="EmployeeNetSalary"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Styles {
+    <environment names="Development,Staging,Production">
+        <link rel="stylesheet" href="@Url.Content("~/lib/sweetalert/dist/sweetalert.css")" />
+    </environment>
+}
+
+
+
+@section Scripts {
+
+    <environment names="Development,Staging,Production">
+        <script src="@Url.Content("~/lib/sweetalert/dist/sweetalert-dev.js")"></script>
+    </environment>
+
+    <script type="text/javascript">
+
+        $("#btnComputeSalary").click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var EmployeeNo = $('#lstEmployee').val();
+
+            if (EmployeeNo == 0) {
+                swal({
+                    title: "Error!",
+                    text: "No employee selected!",
+                    type: "error"
+                });
+
+                return false;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetCalculatedGrossSalary", "Employees")?idNo=" + EmployeeNo,
+                dataType: "json",
+                //contentType: 'application/json',
+                beforeSend: function (e) {
+                    //$(".sk-table").toggle();
+                    //$('#processBAOIbox').children('.ibox-content').toggleClass('sk-loading');
+                },
+                success: function (data) {
+                    var result = data.data;
+
+                    $("#EmployeeName").text(result[0]);
+                    $("#EmployeeTIN").text(result[1]);
+                    $("#EmployeeType").text(result[2])
+                    $("#EmployeeWorkHours").text(result[3]);
+                    $("#EmployeeAbsences").text(result[4]);
+                    $("#EmployeeTaxRate").text(result[5]);
+                    $("#EmployeeGrossSalary").text(result[6]);
+                    $("#EmployeeNetSalary").text(result[7]);
+
+                    swal({
+                        title: "Success!",
+                        text: "Computation Complete!",
+                        type: "success"
+                    });
+
+                    //$("#retrieveRequest").modal("hide");
+                    //$('.dcmasterlist').DataTable().ajax.reload();
+
+                }
+            });
+
+        });
+    </script>
+}

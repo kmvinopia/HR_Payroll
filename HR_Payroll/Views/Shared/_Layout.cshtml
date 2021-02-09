@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HR Payroll</title>
+
+    <!-- Add local styles, mostly for plugins css file -->
+    @if (IsSectionDefined("Styles"))
+    {
+        @RenderSection("Styles", required: false)
+    }
+
+    <environment include="Development">
+        <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/lib/font-awesome/css/font-awesome.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/css/animate.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/css/style.css")" asp-append-version="true" />
+        <link rel="stylesheet" href="@Url.Content("~/css/site.css")" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/lib/font-awesome/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/css/animate.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/css/style.css")" asp-append-version="true" />
+        <link rel="stylesheet" href="@Url.Content("~/css/site.css")" />
+    </environment>
+</head>
+<body class="top-navigation">
+    @*<partial name="_CookieConsentPartial" />*@
+
+    <div id="wrapper" class="@Html.PageClass()">
+
+        @*<partial name="_Navigation" />*@
+        <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
+            <partial name="_TopNavBar" />
+            @*<partial name="_Footer" />*@
+            @RenderBody()
+        </div>
+    </div>
+
+    @RenderSection("toast", required: false)
+
+    <environment names="Development">
+        <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
+        <script src="@Url.Content("~/lib/Popper/popper.min.js")"></script>
+        <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.js")"></script>
+        <script src="@Url.Content("~/lib/metisMenu/dist/jquery.metisMenu.js")"></script>
+        <script src="@Url.Content("~/lib/slimScroll/jquery.slimscroll.js")"></script>
+        <script src="@Url.Content("~/lib/pace/pace.js")"></script>
+        <script src="@Url.Content("~/js/script.js")" asp-append-version="true"></script>
+        <script src="@Url.Content("~/lib/d3/d3.js")"></script>
+
+        <!-- Only for demo purpose -->
+        <script src="@Url.Content("~/js/skin.config.js")"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+        <script src="@Url.Content("~/lib/Popper/popper.min.js")"></script>
+        <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.min.js")"></script>
+        <script src="@Url.Content("~/lib/metisMenu/dist/jquery.metisMenu.js")"></script>
+        <script src="@Url.Content("~/lib/pace/pace.min.js")"></script>
+        <script src="@Url.Content("~/lib/slimScroll/jquery.slimscroll.min.js")"></script>
+        <script src="@Url.Content("~/js/script.js")" asp-append-version="true"></script>
+        <script src="@Url.Content("~/lib/d3/d3.min.js")"></script>
+    </environment>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
