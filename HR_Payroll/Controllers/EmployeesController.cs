@@ -32,7 +32,7 @@ namespace HR_Payroll.Controllers
             //Employees = _employees;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             List<Employee> employees = employeeRepository.GetAllData().ToList();
             List<EmployeeViewModel> employeeViewModels = new List<EmployeeViewModel>();
